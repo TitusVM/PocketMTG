@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "728186693365",
+    "project_id": "pocket-mtg-71129",
+    "storage_bucket": "pocket-mtg-71129.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728186693365:android:9a2f931fb0a2a45c7247bc",
+        "android_client_info": {
+          "package_name": "com.example.pocket_mtg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlkgDNYjzLS3pzN9iOlUmWZDzzxETdnOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
