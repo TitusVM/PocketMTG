@@ -3,5 +3,6 @@
   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
   },
-  "rollDice": "Roll the dice"
+  "rollDice": "Roll the dice",
+  "theme": "Theme menu"
 }

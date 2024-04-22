@@ -47,6 +47,7 @@ dependencies:
   equatable: ^2.0.5
   bloc_provider: ^1.0.0
   flutter_bloc: ^8.1.5
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: Phyrexian
+      fonts:
+        - asset: assets/Phyrexian-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -103,4 +109,4 @@ flutter:
   generate: true
   
   assets:
-    - assets/d20.png
+    - assets/

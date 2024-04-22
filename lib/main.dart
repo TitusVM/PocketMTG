@@ -2,7 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pocket_mtg/dice/dice_screen.dart';
+import 'package:pocket_mtg/themes/my_svg_icon.dart';
+import 'package:pocket_mtg/themes/theme_notifier.dart';
+import 'package:pocket_mtg/themes/theme_page.dart';
+import 'package:pocket_mtg/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
@@ -23,6 +28,7 @@ void main() async {
         Provider<FirestoreService>(
           create: (_) => FirestoreService(FirebaseFirestore.instance),
         ),
+        ChangeNotifierProvider(create: (context) => ThemeNotifier(mtgPurple)),
       ],
       child: const MyApp(),
     ),
@@ -34,12 +40,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return MaterialApp(
       title: 'PocketMTG',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-      ),
+      theme: themeNotifier.getTheme().buildTheme(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: const BottomNavigationBarExample(), 
@@ -61,6 +65,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
   static final List<Widget> _widgetOptions = <Widget>[
     const RoomHomePage(), 
     DicePage(),
+    ThemePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -76,18 +81,21 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
         child: _widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: MySVGIcon(iconPath: 'assets/ability-adventure.svg', isSelected: _selectedIndex == 0),
             label: 'Room',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.casino),
+            icon: MySVGIcon(iconPath: 'assets/ability-d20.svg', isSelected: _selectedIndex == 1),
             label: 'Dice',
+          ),
+          BottomNavigationBarItem(
+            icon: MySVGIcon(iconPath: 'assets/ability-prototype.svg', isSelected: _selectedIndex == 2),
+            label: 'Theme',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800], 
         onTap: _onItemTapped, 
       ),
     );
