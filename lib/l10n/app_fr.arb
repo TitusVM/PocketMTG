@@ -1,3 +1,4 @@
 {
-    "helloWorld": "Bonjour le monde"
+    "helloWorld": "Bonjour le monde",
+    "rollDice" : "Lancer un dé"
 }

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../services/firestore_service.dart';
-import '../models/player.dart';
-import 'active_room_page.dart';
+import 'package:pocket_mtg/multiplayer/models/player.dart';
+import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
 
 class JoinRoomPage extends StatefulWidget {
-  const JoinRoomPage({super.key});
+  final void Function(String roomName, String playerName) onRoomJoined; 
+
+  const JoinRoomPage({
+    required this.onRoomJoined,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _JoinRoomPageState createState() => _JoinRoomPageState();
@@ -35,42 +39,41 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
     final playerName = _playerNameController.text.trim();
 
     if (roomId.isEmpty || playerName.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Please enter both Room ID and Player Name."),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter both Room ID and Player Name."),
+        ),
+      );
       return;
     }
 
     try {
-      final exists = await _firestoreService.roomExists(roomId); 
+      final exists = await _firestoreService.roomExists(roomId);
       if (!exists) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Room does not exist."),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Room does not exist."),
+          ),
+        );
         return;
       }
 
-      final player = Player(name: playerName, life: 40); 
+      final player = Player(name: playerName, life: 40);
       await _firestoreService.joinRoom(roomId, player);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ActiveRoomPage(roomName: roomId, playerName: playerName),
+      widget.onRoomJoined(roomId, playerName); 
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Error joining room. Player name might already exist."),
         ),
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Error joining room. Player name might already exist."),
-      ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Join Room')),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +93,6 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

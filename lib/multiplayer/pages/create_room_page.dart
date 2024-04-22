@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
-import 'package:pocket_mtg/multiplayer/models/room.dart';
+import 'package:flutter/material.dart';
 import 'package:pocket_mtg/multiplayer/models/player.dart';
-import 'active_room_page.dart';
+import 'package:pocket_mtg/multiplayer/models/room.dart';
+import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
 
 class CreateRoomPage extends StatefulWidget {
-  const CreateRoomPage({super.key});
+  final void Function(String roomName, String playerName) onRoomCreated;
+
+  const CreateRoomPage({required this.onRoomCreated, Key? key}) : super(key: key);
 
   @override
   _CreateRoomPageState createState() => _CreateRoomPageState();
@@ -36,9 +37,11 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
     final playerName = _playerNameController.text.trim();
 
     if (roomName.isEmpty || playerName.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Please enter both Room name and Player Name."),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter both Room Name and Player Name."),
+        ),
+      );
       return;
     }
 
@@ -49,24 +52,19 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
     try {
       await _firestoreService.createRoom(room);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ActiveRoomPage(roomName: roomName, playerName: playerName),
+      widget.onRoomCreated(roomName, playerName); 
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Room name already exists. Choose a different one."),
         ),
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Room name already exists. Choose a different one."),
-      ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Create Room')),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +84,6 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

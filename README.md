@@ -18,3 +18,6 @@ samples, guidance on mobile development, and a full API reference.
 ## Sources
 https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization
 https://docs.flutter.dev/cookbook/games/firestore-multiplayer
+https://firebase.google.com/docs/firestore/quickstart
+
+<a href="https://www.flaticon.com/free-icons/icosahedron" title="icosahedron icons">Icosahedron icons created by Freepik - Flaticon</a>

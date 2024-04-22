@@ -32,20 +32,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Room: ${widget.roomName}'),
-        actions: [
-        IconButton(
-          icon: const Icon(Icons.exit_to_app),
-          onPressed: () async {
-            await _firestoreService.leaveRoom(widget.roomName, widget.playerName);
-            Navigator.pop(context); 
-          },
-        ),
-      ],
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
+    return StreamBuilder<DocumentSnapshot>(
         stream: _roomStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -99,7 +86,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
             },
           );
         },
-      ),
-    );
+      )
+    ;
   }
 }
