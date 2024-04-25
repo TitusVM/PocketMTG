@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pocket_mtg/themes/localization_notifier.dart';
 import 'package:pocket_mtg/themes/theme_notifier.dart';
 import 'package:pocket_mtg/themes/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,6 +26,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    final localeNotifier = Provider.of<LocaleNotifier>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.theme),
@@ -36,6 +38,7 @@ class _ThemePageState extends State<ThemePage> {
                 Switch(
                   value: themeNotifier.isPhyrexian,
                   onChanged: (isCustomFont) {
+                    localeNotifier.toggleLocale();
                     themeNotifier.toggleFont();
                   },
                 ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ActiveRoomPage extends StatefulWidget {
   final String roomName;
@@ -32,6 +34,8 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return StreamBuilder<DocumentSnapshot>(
         stream: _roomStream,
         builder: (context, snapshot) {
@@ -42,7 +46,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
           final data = snapshot.data!.data();
 
           if (data == null) {
-            return const Text('No room data available.');
+            return Text(i10n.room_error_no_data);
           }
 
           final roomData = data as Map<String, dynamic>;
@@ -57,8 +61,8 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
               final counter = player['life'];
 
               return ListTile(
-                title: Text('Player: $playerName'),
-                subtitle: Text('Life: $counter'),
+                title: Text('${i10n.player}: $playerName' ),
+                subtitle: Text('${i10n.life}: $counter'),
                 trailing: playerName == widget.playerName
                     ? Row(
                         mainAxisSize: MainAxisSize.min,

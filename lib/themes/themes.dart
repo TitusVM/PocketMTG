@@ -73,7 +73,7 @@ final MyTheme mtgGrey = MyTheme(
 );
 
 final MyTheme mtgWhite = MyTheme(
-  primaryColor: Colors.yellow,
+  primaryColor: Colors.amber,
   textColor: Colors.black,
   defaultIcon: "assets/w.svg",
 );

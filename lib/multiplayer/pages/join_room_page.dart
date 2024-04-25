@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pocket_mtg/multiplayer/models/player.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JoinRoomPage extends StatefulWidget {
   final void Function(String roomName, String playerName) onRoomJoined; 
@@ -37,11 +38,12 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
   Future<void> _joinRoom() async {
     final roomId = _roomIdController.text.trim();
     final playerName = _playerNameController.text.trim();
+    final i10n = AppLocalizations.of(context)!;
 
     if (roomId.isEmpty || playerName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please enter both Room ID and Player Name."),
+        SnackBar(
+          content: Text(i10n.room_error_empty_field),
         ),
       );
       return;
@@ -51,8 +53,8 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
       final exists = await _firestoreService.roomExists(roomId);
       if (!exists) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Room does not exist."),
+          SnackBar(
+            content: Text(i10n.room_error_no_room),
           ),
         );
         return;
@@ -64,8 +66,8 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
       widget.onRoomJoined(roomId, playerName); 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Error joining room. Player name might already exist."),
+        SnackBar(
+          content: Text(i10n.room_error_on_join),
         ),
       );
     }
@@ -73,6 +75,8 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -80,16 +84,16 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
           children: [
             TextField(
               controller: _roomIdController,
-              decoration: const InputDecoration(labelText: 'Room ID'),
+              decoration: InputDecoration(labelText: i10n.room_name),
             ),
             TextField(
               controller: _playerNameController,
-              decoration: const InputDecoration(labelText: 'Player Name'),
+              decoration: InputDecoration(labelText: i10n.player_name),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _joinRoom,
-              child: const Text('Join Room'),
+              child: Text(i10n.join_room),
             ),
           ],
         ),

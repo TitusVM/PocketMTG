@@ -48,6 +48,7 @@ dependencies:
   bloc_provider: ^1.0.0
   flutter_bloc: ^8.1.5
   flutter_svg: ^2.0.10+1
+  scryfall_api: ^2.0.0
 
 dev_dependencies:
   flutter_test:

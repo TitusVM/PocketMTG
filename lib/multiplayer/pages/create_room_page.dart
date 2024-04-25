@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pocket_mtg/multiplayer/models/player.dart';
 import 'package:pocket_mtg/multiplayer/models/room.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateRoomPage extends StatefulWidget {
   final void Function(String roomName, String playerName) onRoomCreated;
@@ -35,11 +36,12 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   Future<void> _createRoom() async {
     final roomName = _roomNameController.text.trim();
     final playerName = _playerNameController.text.trim();
+    final i10n = AppLocalizations.of(context)!;
 
     if (roomName.isEmpty || playerName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please enter both Room Name and Player Name."),
+        SnackBar(
+          content: Text(i10n.room_error_empty_field),
         ),
       );
       return;
@@ -55,8 +57,8 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
       widget.onRoomCreated(roomName, playerName); 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Room name already exists. Choose a different one."),
+        SnackBar(
+          content: Text(i10n.room_error_room_exists),
         ),
       );
     }
@@ -64,6 +66,8 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -71,16 +75,16 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
           children: [
             TextField(
               controller: _roomNameController,
-              decoration: const InputDecoration(labelText: 'Room name'),
+              decoration: InputDecoration(labelText: i10n.room_name),
             ),
             TextField(
               controller: _playerNameController,
-              decoration: const InputDecoration(labelText: 'Player Name'),
+              decoration: InputDecoration(labelText: i10n.player_name),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _createRoom,
-              child: const Text('Create Room'),
+              child: Text(i10n.create_room),
             ),
           ],
         ),
