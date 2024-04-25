@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pocket_mtg/multiplayer/models/player.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pocket_mtg/themes/theme_notifier.dart';
+import 'package:provider/provider.dart';
 
 class JoinRoomPage extends StatefulWidget {
   final void Function(String roomName, String playerName) onRoomJoined; 
@@ -59,8 +61,8 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
         );
         return;
       }
-
-      final player = Player(name: playerName, life: 40);
+      final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
+      final player = Player(name: playerName, life: 40, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon);
       await _firestoreService.joinRoom(roomId, player);
 
       widget.onRoomJoined(roomId, playerName); 

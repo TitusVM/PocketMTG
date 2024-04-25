@@ -4,6 +4,8 @@ import 'package:pocket_mtg/multiplayer/models/player.dart';
 import 'package:pocket_mtg/multiplayer/models/room.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pocket_mtg/themes/theme_notifier.dart';
+import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatefulWidget {
   final void Function(String roomName, String playerName) onRoomCreated;
@@ -37,7 +39,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
     final roomName = _roomNameController.text.trim();
     final playerName = _playerNameController.text.trim();
     final i10n = AppLocalizations.of(context)!;
-
+    final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
     if (roomName.isEmpty || playerName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -49,7 +51,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
     final room = Room(
       roomName: roomName,
-      players: [Player(name: playerName, life: 40)],
+      players: [Player(name: playerName, life: 40, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon)],
     );
 
     try {
