@@ -10,7 +10,7 @@ class RoomHomePage extends StatefulWidget {
   const RoomHomePage({Key? key}) : super(key: key);
 
   @override
-  _RoomHomePageState createState() => _RoomHomePageState();
+  State<RoomHomePage> createState() => _RoomHomePageState();
 }
 
 class _RoomHomePageState extends State<RoomHomePage> {

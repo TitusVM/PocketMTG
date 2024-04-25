@@ -7,7 +7,7 @@ class DicePage extends StatefulWidget {
   const DicePage({Key? key}) : super(key: key);
 
   @override
-  _DicePageState createState() => _DicePageState();
+  State<DicePage> createState() => _DicePageState();
 }
 
 class _DicePageState extends State<DicePage> with SingleTickerProviderStateMixin {

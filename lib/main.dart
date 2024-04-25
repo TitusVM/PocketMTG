@@ -30,7 +30,7 @@ void main() async {
           create: (_) => FirestoreService(FirebaseFirestore.instance),
         ),
         ChangeNotifierProvider(create: (context) => ThemeNotifier(mtgPurple)),
-        ChangeNotifierProvider(create: (context) => LocaleNotifier(Locale('en'))),
+        ChangeNotifierProvider(create: (context) => LocaleNotifier(const Locale('en'))),
       ],
       child: const MyApp(),
     ),
@@ -60,7 +60,7 @@ class BottomNavigationBarExample extends StatefulWidget {
   const BottomNavigationBarExample({super.key});
 
   @override
-  _BottomNavigationBarExampleState createState() => _BottomNavigationBarExampleState();
+  State<BottomNavigationBarExample> createState() => _BottomNavigationBarExampleState();
 }
 
 class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
@@ -68,9 +68,9 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
 
   static final List<Widget> _widgetOptions = <Widget>[
     const RoomHomePage(), 
-    ProxyPage(),
-    DicePage(),
-    ThemePage(),
+    const ProxyPage(),
+    const DicePage(),
+    const ThemePage(),
   ];
 
   void _onItemTapped(int index) {

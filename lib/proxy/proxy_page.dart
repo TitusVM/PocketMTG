@@ -12,7 +12,7 @@ class ProxyPage extends StatefulWidget {
 class _ProxyPageState extends State<ProxyPage> {
   final apiClient = ScryfallApiClient();
   Future<MtgCard?>? card;
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   void _searchCard() {
     setState(() {
@@ -38,7 +38,7 @@ class _ProxyPageState extends State<ProxyPage> {
             child: TextField(
               controller: _controller,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 labelText: i10n.proxy_search,
               ),
             ),
@@ -52,7 +52,7 @@ class _ProxyPageState extends State<ProxyPage> {
               future: card,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const Center(child:CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Text(i10n.proxy_error_more_specific);
                 } else if (snapshot.hasData) {

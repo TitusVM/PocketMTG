@@ -15,7 +15,7 @@ class JoinRoomPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _JoinRoomPageState createState() => _JoinRoomPageState();
+  State<JoinRoomPage> createState() => _JoinRoomPageState();
 }
 
 class _JoinRoomPageState extends State<JoinRoomPage> {

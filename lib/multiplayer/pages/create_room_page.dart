@@ -13,7 +13,7 @@ class CreateRoomPage extends StatefulWidget {
   const CreateRoomPage({required this.onRoomCreated, Key? key}) : super(key: key);
 
   @override
-  _CreateRoomPageState createState() => _CreateRoomPageState();
+  State<CreateRoomPage> createState() => _CreateRoomPageState();
 }
 
 class _CreateRoomPageState extends State<CreateRoomPage> {

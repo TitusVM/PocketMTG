@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pocket_mtg/themes/localization_notifier.dart';
@@ -10,7 +12,7 @@ class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);
 
   @override
-  _ThemePageState createState() => _ThemePageState();
+  State<ThemePage> createState() => _ThemePageState();
 }
 
 class _ThemePageState extends State<ThemePage> {
@@ -23,10 +25,21 @@ class _ThemePageState extends State<ThemePage> {
     mtgGrey,
   ];
 
+  final MaterialStateProperty<Icon?> thumbIcon =
+      MaterialStateProperty.resolveWith<Icon?>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return const Icon(IconData(59392, fontFamily: 'MTGIcons'));
+      }
+        return const Icon(IconData(59393, fontFamily: 'MTGIcons'));
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     final localeNotifier = Provider.of<LocaleNotifier>(context);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.theme),
@@ -36,6 +49,7 @@ class _ThemePageState extends State<ThemePage> {
             child: Column(
               children: [
                 Switch(
+                  thumbIcon: thumbIcon,
                   value: themeNotifier.isPhyrexian,
                   onChanged: (isCustomFont) {
                     localeNotifier.toggleLocale();

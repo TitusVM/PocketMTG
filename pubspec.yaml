@@ -76,6 +76,9 @@ flutter:
     - family: Phyrexian
       fonts:
         - asset: assets/Phyrexian-Regular.ttf
+    - family: MTGIcons
+      fonts:
+        - asset: assets/icons.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

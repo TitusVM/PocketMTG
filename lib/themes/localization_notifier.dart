@@ -8,7 +8,7 @@ class LocaleNotifier extends ChangeNotifier {
   Locale get locale => _locale;
 
   void toggleLocale() {
-    _locale = _locale == Locale('en') ? Locale('fr') : Locale('en');
+    _locale = _locale == const Locale('en') ? const Locale('fr') : const Locale('en');
     notifyListeners();
   }
 }

@@ -15,7 +15,7 @@ class ActiveRoomPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ActiveRoomPageState createState() => _ActiveRoomPageState();
+  State<ActiveRoomPage> createState() => _ActiveRoomPageState();
 }
 
 class _ActiveRoomPageState extends State<ActiveRoomPage> {
@@ -54,47 +54,68 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
 
         final players = roomData['players'] as List<dynamic>;
 
-        return ListView.builder(
+        return ListView.separated(
           itemCount: players.length,
+          padding: const EdgeInsets.all(8),
           itemBuilder: (context, index) {
             final player = Player.fromMap(players[index]);
 
             return ListTile(
               shape: RoundedRectangleBorder(
-                side: BorderSide(color: player.favColor, width: 1),
+                side: BorderSide(color: player.favColor, width: 2),
                 borderRadius: BorderRadius.circular(5),
               ),
-              title: Row(children: [
-                Text('${i10n.player}: ${player.name}'),
-                Text('${i10n.life}: ${player.life}')
-              ]),
-              subtitle: player.name == widget.playerName
-                  ? Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
+                title: Text(
+                '${i10n.player}: ${player.name}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              subtitle: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  player.name == widget.playerName
+                      ? IconButton(
                           icon: const Icon(Icons.remove_circle_outline),
                           onPressed: () => _updateLife(player.name, -5),
+                        )
+                      : const SizedBox(
+                          width: 48,
+                          height: 48,
                         ),
-                        IconButton(
+                  player.name == widget.playerName
+                      ? IconButton(
                           icon: const Icon(Icons.remove),
                           onPressed: () => _updateLife(player.name, -1),
+                        )
+                      : const SizedBox(
+                          width: 48,
+                          height: 48,
                         ),
-                        IconButton(
+                  Text('${i10n.life}: ${player.life}'),
+                  player.name == widget.playerName
+                      ? IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () => _updateLife(player.name, 1),
+                        )
+                      : const SizedBox(
+                          width: 48,
+                          height: 48,
                         ),
-                        IconButton(
+                  player.name == widget.playerName
+                      ? IconButton(
                           icon: const Icon(Icons.add_circle_outline),
                           onPressed: () => _updateLife(player.name, 5),
+                        )
+                      : const SizedBox(
+                          width: 48,
+                          height: 48,
                         ),
-                      ],
-                    )
-                  : null,
-                  trailing: SvgPicture.asset(player.favIcon, width: 24, height: 24)
-,
+                ],
+              ),
+              trailing: SvgPicture.asset(player.favIcon, width: 40, height: 40),
             );
-          },
+          }, separatorBuilder: (BuildContext context, int index) {
+            return const Padding(padding: EdgeInsets.all(8));
+           },
         );
       },
     );
