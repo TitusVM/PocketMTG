@@ -62,7 +62,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
         return;
       }
       final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
-      final player = Player(name: playerName, life: 40, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon);
+      final player = Player(name: playerName, life: 40, poison: 0, cmdtDamage: 0, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon);
       await _firestoreService.joinRoom(roomId, player);
 
       widget.onRoomJoined(roomId, playerName); 

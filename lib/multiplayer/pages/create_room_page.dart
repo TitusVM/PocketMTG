@@ -51,7 +51,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
     final room = Room(
       roomName: roomName,
-      players: [Player(name: playerName, life: 40, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon)],
+      players: [Player(name: playerName, life: 40, poison: 0, cmdtDamage: 0, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon)],
     );
 
     try {

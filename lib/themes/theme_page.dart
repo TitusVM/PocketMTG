@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pocket_mtg/themes/localization_notifier.dart';
@@ -56,8 +54,7 @@ class _ThemePageState extends State<ThemePage> {
                     themeNotifier.toggleFont();
                   },
                 ),
-                SizedBox(
-                  height: 400,
+                Expanded(
                   child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:

@@ -33,20 +33,6 @@ class _ProxyPageState extends State<ProxyPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: i10n.proxy_search,
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _searchCard,
-            child: Text(i10n.proxy_search_button),
-          ),
           Expanded(
             child: FutureBuilder<MtgCard?>(
               future: card,
@@ -58,17 +44,36 @@ class _ProxyPageState extends State<ProxyPage> {
                 } else if (snapshot.hasData) {
                   var mtgCard = snapshot.data;
                   if (mtgCard?.imageUris?.borderCrop != null) {
-                    return Image.network(
-                        mtgCard!.imageUris!.borderCrop.toString());
+                    return Padding(padding: const EdgeInsets.all(8) , child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        mtgCard!.imageUris!.borderCrop.toString(),
+                      ),
+                    ));
                   } else {
-                    return Text(i10n.proxy_error_not_supported);
+                    return Center(child:Padding(padding: const EdgeInsets.all(20), child: Text(i10n.proxy_error_not_supported)));
                   }
                 } else {
-                  return Text(i10n.proxy_greeting);
+                  return Center(child:Padding(padding: const EdgeInsets.all(20), child: Text(i10n.proxy_greeting)));
                 }
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: i10n.proxy_search,
+              ),
+            ),
+          ),
+          Padding(padding: const EdgeInsets.all(8.0), child:
+          ElevatedButton(
+            onPressed: _searchCard,
+            child: Text(i10n.proxy_search_button),
+          ),)
         ],
       ),
     ),
