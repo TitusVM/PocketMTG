@@ -1,2 +1,26 @@
 {
-    "helloWorld": "Bonjour le monde"
+  "rollDice": "roll the die",
+  "theme": "theme menu",
+  "title": "poketmtg",
+  "room": "room",
+  "dice": "die",
+  "theme": "theme",
+  "room_error_empty_field": "please enter both room id and player name.",
+  "room_error_no_room": "room does not exist.",
+  "room_error_on_join": "error joining room. player name might already exist.",
+  "room_error_room_exists": "room name already exists. hoose a different one.",
+  "room_error_no_data": "no room data available.",
+  "room_name": "room name",
+  "player_name": "player name",
+  "join_room": "join room",
+  "create_room": "reate room",
+  "player": "player",
+  "life": "life",
+  "proxy": "proxy",
+  "proxy_title": "proxy searher",
+  "proxy_search": "enter a ard name",
+  "proxy_search_button": "searh ard",
+  "proxy_error_more_specific": "please be more speifi",
+  "proxy_error_not_supported": "this ard an't be loaded (double sided ards are not supported)",
+  "proxy_greeting": "you an look for almost any kind of ards to proxy using the sryfall api."
+}

@@ -1,6 +1,26 @@
 {
-  "helloWorld": "Hello World?",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+  "rollDice": "Roll the dice",
+  "theme": "Theme menu",
+  "title": "PocketMTG",
+  "room": "Room",
+  "dice": "Dice",
+  "theme": "Theme",
+  "room_error_empty_field": "Please enter both Room ID and Player Name.",
+  "room_error_no_room": "Room does not exist.",
+  "room_error_on_join": "Error joining room. Player name might already exist.",
+  "room_error_room_exists": "Room name already exists. Choose a different one.",
+  "room_error_no_data": "No room data available.",
+  "room_name": "Room name",
+  "player_name": "Player name",
+  "join_room": "Join room",
+  "create_room": "Create room",
+  "player": "Player",
+  "life": "Life",
+  "proxy": "Proxy",
+  "proxy_title": "Proxy searcher",
+  "proxy_search": "Enter a card name",
+  "proxy_search_button": "Search card",
+  "proxy_error_more_specific": "Please be more specific",
+  "proxy_error_not_supported": "This card can't be loaded (double sided cards are not supported)",
+  "proxy_greeting": "You can look for almost any kind of cards to proxy using the Scryfall api."
 }
