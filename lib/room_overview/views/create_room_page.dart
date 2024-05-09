@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pocket_mtg/multiplayer/models/player.dart';
-import 'package:pocket_mtg/multiplayer/models/room.dart';
-import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
+import 'package:pocket_mtg/room_overview/models/player.dart';
+import 'package:pocket_mtg/room_overview/models/room.dart';
+import 'package:pocket_mtg/room_overview/services/firestore_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pocket_mtg/room_overview/bloc/room_bloc.dart';
 import 'package:pocket_mtg/themes/theme_notifier.dart';

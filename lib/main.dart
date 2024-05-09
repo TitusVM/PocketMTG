@@ -11,7 +11,7 @@ import 'package:pocket_mtg/themes/theme_page.dart';
 import 'package:pocket_mtg/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
+import 'package:pocket_mtg/room_overview/services/firestore_service.dart';
 import 'room_overview/views/room_page.dart';
 
 void main() async {

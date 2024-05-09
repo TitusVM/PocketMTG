@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pocket_mtg/multiplayer/models/room.dart';
-import 'package:pocket_mtg/multiplayer/models/player.dart';
+import 'package:pocket_mtg/room_overview/models/room.dart';
+import 'package:pocket_mtg/room_overview/models/player.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore;

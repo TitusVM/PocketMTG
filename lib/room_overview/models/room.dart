@@ -1,5 +1,5 @@
 
-import 'package:pocket_mtg/multiplayer/models/player.dart';
+import 'package:pocket_mtg/room_overview/models/player.dart';
 
 class Room {
   final String roomName;

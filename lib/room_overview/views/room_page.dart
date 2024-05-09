@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
+import 'package:pocket_mtg/room_overview/services/firestore_service.dart';
 import 'package:pocket_mtg/room_overview/bloc/room_bloc.dart';
 import 'package:pocket_mtg/room_overview/views/active_room_page.dart';
 import 'package:pocket_mtg/room_overview/views/create_room_page.dart';

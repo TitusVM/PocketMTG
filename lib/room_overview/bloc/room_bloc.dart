@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:pocket_mtg/multiplayer/models/player.dart';
+import 'package:pocket_mtg/room_overview/models/player.dart';
 
 part 'room_event.dart';
 part 'room_state.dart';

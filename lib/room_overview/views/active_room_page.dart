@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pocket_mtg/multiplayer/models/player.dart';
-import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
+import 'package:pocket_mtg/room_overview/models/player.dart';
+import 'package:pocket_mtg/room_overview/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
