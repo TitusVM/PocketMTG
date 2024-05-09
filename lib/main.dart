@@ -12,7 +12,7 @@ import 'package:pocket_mtg/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
-import 'package:pocket_mtg/multiplayer/room_home_page.dart';
+import 'room_overview/views/room_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +67,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const RoomHomePage(), 
+    const RoomPage(), 
     const ProxyPage(),
     const DicePage(),
     const ThemePage(),

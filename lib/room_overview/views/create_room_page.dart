@@ -1,25 +1,23 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:pocket_mtg/multiplayer/models/player.dart';
+import 'package:pocket_mtg/multiplayer/models/room.dart';
 import 'package:pocket_mtg/multiplayer/services/firestore_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pocket_mtg/room_overview/bloc/room_bloc.dart';
 import 'package:pocket_mtg/themes/theme_notifier.dart';
 import 'package:provider/provider.dart';
 
-class JoinRoomPage extends StatefulWidget {
-  final void Function(String roomName, String playerName) onRoomJoined; 
+class CreateRoomPage extends StatefulWidget {
 
-  const JoinRoomPage({
-    required this.onRoomJoined,
-    Key? key,
-  }) : super(key: key);
+  const CreateRoomPage({Key? key}) : super(key: key);
 
   @override
-  State<JoinRoomPage> createState() => _JoinRoomPageState();
+  State<CreateRoomPage> createState() => _CreateRoomPageState();
 }
 
-class _JoinRoomPageState extends State<JoinRoomPage> {
-  final TextEditingController _roomIdController = TextEditingController();
+class _CreateRoomPageState extends State<CreateRoomPage> {
+  final TextEditingController _roomNameController = TextEditingController();
   final TextEditingController _playerNameController = TextEditingController();
 
   late FirestoreService _firestoreService;
@@ -32,17 +30,17 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
 
   @override
   void dispose() {
-    _roomIdController.dispose();
+    _roomNameController.dispose();
     _playerNameController.dispose();
     super.dispose();
   }
 
-  Future<void> _joinRoom() async {
-    final roomId = _roomIdController.text.trim();
+  Future<void> _createRoom() async {
+    final roomName = _roomNameController.text.trim();
     final playerName = _playerNameController.text.trim();
     final i10n = AppLocalizations.of(context)!;
-
-    if (roomId.isEmpty || playerName.isEmpty) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
+    if (roomName.isEmpty || playerName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(i10n.room_error_empty_field),
@@ -50,26 +48,19 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
       );
       return;
     }
+    final player = Player(name: playerName, life: 40, poison: 0, cmdtDamage: 0, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon);
+    final room = Room(
+      roomName: roomName,
+      players: [player],
+    );
 
     try {
-      final exists = await _firestoreService.roomExists(roomId);
-      if (!exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(i10n.room_error_no_room),
-          ),
-        );
-        return;
-      }
-      final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
-      final player = Player(name: playerName, life: 40, poison: 0, cmdtDamage: 0, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon);
-      await _firestoreService.joinRoom(roomId, player);
-
-      widget.onRoomJoined(roomId, playerName); 
+      await _firestoreService.createRoom(room);
+      context.read<RoomBloc>().add(JoinSubmitted(room: room.roomName, player: player));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(i10n.room_error_on_join),
+          content: Text(i10n.room_error_room_exists),
         ),
       );
     }
@@ -85,7 +76,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              controller: _roomIdController,
+              controller: _roomNameController,
               decoration: InputDecoration(labelText: i10n.room_name),
             ),
             TextField(
@@ -94,8 +85,8 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _joinRoom,
-              child: Text(i10n.join_room),
+              onPressed: _createRoom,
+              child: Text(i10n.create_room),
             ),
           ],
         ),
