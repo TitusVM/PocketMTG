@@ -73,20 +73,17 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
     const ThemePage(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final i10n = AppLocalizations.of(context)!;
     return Scaffold(
-      body: Center(
-        child: _widgetOptions[_selectedIndex],
-      ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(
             icon: MySVGIcon(iconPath: 'assets/ability-adventure.svg', isSelected: _selectedIndex == 0),
@@ -105,8 +102,10 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
             label: i10n.theme,
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped, 
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
       ),
     );
   }
