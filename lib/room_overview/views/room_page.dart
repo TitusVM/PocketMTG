@@ -6,6 +6,8 @@ import 'package:pocket_mtg/room_overview/bloc/room_bloc.dart';
 import 'package:pocket_mtg/room_overview/views/active_room_page.dart';
 import 'package:pocket_mtg/room_overview/views/create_room_page.dart';
 import 'package:pocket_mtg/room_overview/views/join_room_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class RoomPage extends StatefulWidget {
   const RoomPage({Key? key}) : super(key: key);
@@ -47,10 +49,30 @@ class RoomView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('PocketMTG'),
+        title: Text(i10n.title),
+        leading: Builder(
+          builder: (context) {
+            if(context.read<RoomBloc>().state.roomOverviewState == RoomOverviewState.active)
+            {
+              return IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  context.read<RoomBloc>().add(const ReturnClicked());
+                },
+              );
+            }
+            return IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                context.read<RoomBloc>().add(const ReturnClicked());
+              },
+            );
+          },
+        ),
       ),
       body: BlocBuilder<RoomBloc, RoomState>(
       builder: (context, state) {
@@ -82,6 +104,8 @@ class RoomHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -90,13 +114,13 @@ class RoomHomePage extends StatelessWidget {
               onPressed: () {
                 context.read<RoomBloc>().add(const CreateClicked());
               },
-              child: const Text('Create Room'),
+              child: Text(i10n.create_room),
             ),
             ElevatedButton(
               onPressed: () {
                 context.read<RoomBloc>().add(const JoinClicked());
               },
-              child: const Text('Join Room'),
+              child: Text(i10n.join_room),
             ),
           ],
         )

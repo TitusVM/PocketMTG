@@ -13,6 +13,10 @@ class MyTheme {
     this.isPhyrexian = false,
   });
 
+  void togglePhyrexian() {
+    isPhyrexian = !isPhyrexian;
+  }
+
   // Build ThemeData when needed
   ThemeData buildTheme() {
     return createMyTheme(primaryColor, textColor, isPhyrexian);
@@ -21,7 +25,25 @@ class MyTheme {
 
 ThemeData createMyTheme(MaterialColor primaryColor, Color textColor, bool isPhyrexian) {
   return ThemeData(
+    textSelectionTheme: TextSelectionThemeData(cursorColor: primaryColor),
     fontFamily: isPhyrexian ? 'Phyrexian' : '',
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: primaryColor),
+      ),
+      focusedErrorBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: primaryColor),
+      ),
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: primaryColor),
+      ),
+      errorBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: primaryColor),
+      ),
+      hintStyle: TextStyle(color: primaryColor),
+      errorStyle: TextStyle(color: primaryColor),
+    ),
+    
     primarySwatch: primaryColor,
     appBarTheme: AppBarTheme(
       backgroundColor: primaryColor,
@@ -30,6 +52,9 @@ ThemeData createMyTheme(MaterialColor primaryColor, Color textColor, bool isPhyr
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: primaryColor,
       foregroundColor: textColor,
+    ),
+    switchTheme: SwitchThemeData(
+      trackColor: MaterialStateProperty.all<Color>(primaryColor),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(

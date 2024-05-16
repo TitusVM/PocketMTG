@@ -5,16 +5,18 @@ class MySVGIcon extends StatelessWidget {
   final String iconPath;
   final double size;
   final bool isSelected;
+  Color primaryColor;
 
-  const MySVGIcon({super.key, 
+  MySVGIcon({super.key, 
     required this.iconPath,
     required this.isSelected,
+    required this.primaryColor,
     this.size = 24,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color color = isSelected ? Theme.of(context).primaryColor : Colors.grey;
+    Color color = isSelected ? primaryColor : Colors.grey;
 
     return SvgPicture.asset(
       iconPath,

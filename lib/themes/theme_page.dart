@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pocket_mtg/themes/localization_notifier.dart';
@@ -22,6 +24,8 @@ class _ThemePageState extends State<ThemePage> {
     mtgWhite,
     mtgGrey,
   ];
+
+  int selected = 0;
 
   final MaterialStateProperty<Icon?> thumbIcon =
       MaterialStateProperty.resolveWith<Icon?>(
@@ -52,6 +56,12 @@ class _ThemePageState extends State<ThemePage> {
                   onChanged: (isCustomFont) {
                     localeNotifier.toggleLocale();
                     themeNotifier.toggleFont();
+                    for (int i = 0; i < themes.length; i++) {
+                      if(selected != i)
+                      {
+                        themes[i].togglePhyrexian();
+                      }
+                    }
                   },
                 ),
                 Expanded(
@@ -72,6 +82,7 @@ class _ThemePageState extends State<ThemePage> {
                           foregroundColor: myTheme.textColor,
                         ),
                         onPressed: () {
+                          selected = index;
                           themeNotifier.setTheme(myTheme);
                         },
                         child: themeNotifier.isPhyrexian

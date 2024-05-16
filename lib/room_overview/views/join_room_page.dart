@@ -68,7 +68,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(i10n.room_error_on_join),
+          content: Text(e.toString()),
         ),
       );
     }

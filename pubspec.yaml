@@ -50,6 +50,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   scryfall_api: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
