@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/number_symbols_data.dart';
 import 'package:pocket_mtg/dice/dice_screen.dart';
 import 'package:pocket_mtg/proxy/proxy_page.dart';
 import 'package:pocket_mtg/themes/localization_notifier.dart';
@@ -73,20 +74,17 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
     const ThemePage(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final i10n = AppLocalizations.of(context)!;
     return Scaffold(
-      body: Center(
-        child: _widgetOptions[_selectedIndex],
-      ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(
             icon: MySVGIcon(iconPath: 'assets/ability-adventure.svg', isSelected: _selectedIndex == 0),
@@ -105,8 +103,10 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
             label: i10n.theme,
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped, 
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
       ),
     );
   }
