@@ -23,11 +23,17 @@ class MyTheme {
   }
 }
 
-ThemeData createMyTheme(MaterialColor primaryColor, Color textColor, bool isPhyrexian) {
+ThemeData createMyTheme(
+    MaterialColor primaryColor, Color textColor, bool isPhyrexian) {
   return ThemeData(
-    textSelectionTheme: TextSelectionThemeData(cursorColor: primaryColor),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
+    textSelectionTheme: TextSelectionThemeData(
+        cursorColor: primaryColor,
+        selectionColor: primaryColor.withOpacity(0.5),
+        selectionHandleColor: primaryColor.withOpacity(0.8)),
     fontFamily: isPhyrexian ? 'Phyrexian' : '',
     inputDecorationTheme: InputDecorationTheme(
+      labelStyle: const TextStyle(color: Colors.black),
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: primaryColor),
       ),
@@ -61,10 +67,10 @@ ThemeData createMyTheme(MaterialColor primaryColor, Color textColor, bool isPhyr
       trackColor: MaterialStateProperty.all<Color>(primaryColor),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-            backgroundColor: primaryColor,
-            foregroundColor: textColor,
-          )),
+        style: ElevatedButton.styleFrom(
+      backgroundColor: primaryColor,
+      foregroundColor: textColor,
+    )),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: primaryColor,
     ),
@@ -106,4 +112,3 @@ final MyTheme mtgWhite = MyTheme(
   textColor: Colors.black,
   defaultIcon: "assets/w.svg",
 );
-

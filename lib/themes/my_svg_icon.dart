@@ -8,7 +8,8 @@ class MySVGIcon extends StatelessWidget {
   final bool isSelected;
   Color primaryColor;
 
-  MySVGIcon({super.key, 
+  MySVGIcon({
+    super.key,
     required this.iconPath,
     required this.isSelected,
     required this.primaryColor,
@@ -19,11 +20,9 @@ class MySVGIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     Color color = isSelected ? primaryColor : Colors.grey;
 
-    return SvgPicture.asset(
-      iconPath,
-      width: size,
-      height: size,
-      colorFilter: ColorFilter.mode(color, BlendMode.srcIn)
-    );
+    return SvgPicture.asset(iconPath,
+        width: size,
+        height: size,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn));
   }
 }

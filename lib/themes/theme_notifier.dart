@@ -9,7 +9,8 @@ class ThemeNotifier extends ChangeNotifier {
   MyTheme getTheme() => _currentTheme;
 
   Color get primaryColor => _currentTheme.primaryColor;
-  String get defaultIcon => _currentTheme.isPhyrexian ? "assets/p.svg" : _currentTheme.defaultIcon;
+  String get defaultIcon =>
+      _currentTheme.isPhyrexian ? "assets/p.svg" : _currentTheme.defaultIcon;
 
   bool get isPhyrexian => _currentTheme.isPhyrexian;
 
@@ -17,10 +18,9 @@ class ThemeNotifier extends ChangeNotifier {
     _currentTheme = newTheme;
     notifyListeners();
   }
+
   void toggleFont() {
     _currentTheme.isPhyrexian = !_currentTheme.isPhyrexian;
     notifyListeners();
   }
-
-
 }

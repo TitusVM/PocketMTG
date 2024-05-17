@@ -31,7 +31,7 @@ class FirestoreService {
       }
       final room = Room.fromMap(roomSnapshot.data() as Map<String, dynamic>);
       final players = room.players;
-      if(players.length >= 4){
+      if (players.length >= 4) {
         throw Exception('Room is full');
       }
       if (players.any((p) => p.name == player.name)) {
@@ -99,7 +99,9 @@ class FirestoreService {
           .update(roomRef, {'players': players.map((p) => p.toMap()).toList()});
     });
   }
-  Future<void> updatePoison(String roomName, String playerName, int step) async {
+
+  Future<void> updatePoison(
+      String roomName, String playerName, int step) async {
     final roomRef = _firestore.collection('rooms').doc(roomName);
     await _firestore.runTransaction((transaction) async {
       final roomSnapshot = await transaction.get(roomRef);
@@ -122,7 +124,9 @@ class FirestoreService {
           .update(roomRef, {'players': players.map((p) => p.toMap()).toList()});
     });
   }
-  Future<void> updateCmdtDamage(String roomName, String playerName, int step) async {
+
+  Future<void> updateCmdtDamage(
+      String roomName, String playerName, int step) async {
     final roomRef = _firestore.collection('rooms').doc(roomName);
     await _firestore.runTransaction((transaction) async {
       final roomSnapshot = await transaction.get(roomRef);

@@ -22,7 +22,6 @@ class DamageControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -34,20 +33,22 @@ class DamageControl extends StatelessWidget {
           icon: const Icon(Icons.remove),
           onPressed: () => updateCallback(playerName, -1),
         ),
-        SizedBox(width: 40, child: 
-        RichText(
-          text: TextSpan(
-            children: [
-              WidgetSpan(
-                child: Icon(icon, size: 16),
-              ),
-              TextSpan(
-                text: label,
-                style: const TextStyle(color: Colors.black),
-              ),
-            ],
+        SizedBox(
+          width: 40,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                WidgetSpan(
+                  child: Icon(icon, size: 16),
+                ),
+                TextSpan(
+                  text: label,
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
           ),
-        ),),
+        ),
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: () => updateCallback(playerName, 1),
@@ -95,8 +96,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
   }
 
   Future<void> _updateCmdtDamage(String playerName, int step) async {
-    await _firestoreService.updateCmdtDamage(
-        widget.roomName, playerName, step);
+    await _firestoreService.updateCmdtDamage(widget.roomName, playerName, step);
   }
 
   @override

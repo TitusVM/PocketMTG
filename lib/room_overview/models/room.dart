@@ -1,4 +1,3 @@
-
 import 'package:pocket_mtg/room_overview/models/player.dart';
 
 class Room {

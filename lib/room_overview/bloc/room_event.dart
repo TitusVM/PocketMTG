@@ -1,10 +1,10 @@
 part of 'room_bloc.dart';
 
-abstract class RoomEvent extends Equatable{
-    const RoomEvent();
+abstract class RoomEvent extends Equatable {
+  const RoomEvent();
 
-    @override
-    List<Object> get props => [];
+  @override
+  List<Object> get props => [];
 }
 
 class CreateClicked extends RoomEvent {

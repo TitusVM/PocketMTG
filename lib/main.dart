@@ -30,7 +30,8 @@ void main() async {
           create: (_) => FirestoreService(FirebaseFirestore.instance),
         ),
         ChangeNotifierProvider(create: (context) => ThemeNotifier(mtgPurple)),
-        ChangeNotifierProvider(create: (context) => LocaleNotifier(const Locale('en'))),
+        ChangeNotifierProvider(
+            create: (context) => LocaleNotifier(const Locale('en'))),
       ],
       child: const MyApp(),
     ),
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
       locale: localeNotifier.locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const BottomNavigationBarExample(), 
+      home: const BottomNavigationBarExample(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -60,16 +61,16 @@ class BottomNavigationBarExample extends StatefulWidget {
   const BottomNavigationBarExample({super.key});
 
   @override
-  State<BottomNavigationBarExample> createState() => _BottomNavigationBarExampleState();
+  State<BottomNavigationBarExample> createState() =>
+      _BottomNavigationBarExampleState();
 }
 
-class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
-
-
+class _BottomNavigationBarExampleState
+    extends State<BottomNavigationBarExample> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const RoomPage(), 
+    const RoomPage(),
     const ProxyPage(),
     const DicePage(),
     const ThemePage(),
@@ -89,19 +90,31 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
         currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-adventure.svg', isSelected: _selectedIndex == 0, primaryColor: themeNotifier.primaryColor),
+            icon: MySVGIcon(
+                iconPath: 'assets/ability-adventure.svg',
+                isSelected: _selectedIndex == 0,
+                primaryColor: themeNotifier.primaryColor),
             label: i10n.room,
           ),
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-transform.svg', isSelected: _selectedIndex == 1, primaryColor: themeNotifier.primaryColor),
+            icon: MySVGIcon(
+                iconPath: 'assets/ability-transform.svg',
+                isSelected: _selectedIndex == 1,
+                primaryColor: themeNotifier.primaryColor),
             label: i10n.proxy,
           ),
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-d20.svg', isSelected: _selectedIndex == 2, primaryColor: themeNotifier.primaryColor),
+            icon: MySVGIcon(
+                iconPath: 'assets/ability-d20.svg',
+                isSelected: _selectedIndex == 2,
+                primaryColor: themeNotifier.primaryColor),
             label: i10n.dice,
           ),
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-prototype.svg', isSelected: _selectedIndex == 3, primaryColor: themeNotifier.primaryColor),
+            icon: MySVGIcon(
+                iconPath: 'assets/ability-prototype.svg',
+                isSelected: _selectedIndex == 3,
+                primaryColor: themeNotifier.primaryColor),
             label: i10n.theme,
           ),
         ],

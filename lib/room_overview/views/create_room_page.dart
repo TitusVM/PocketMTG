@@ -9,7 +9,6 @@ import 'package:pocket_mtg/themes/theme_notifier.dart';
 import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatefulWidget {
-
   const CreateRoomPage({Key? key}) : super(key: key);
 
   @override
@@ -48,7 +47,13 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
       );
       return;
     }
-    final player = Player(name: playerName, life: 40, poison: 0, cmdtDamage: 0, favColor: themeNotifier.primaryColor, favIcon: themeNotifier.defaultIcon);
+    final player = Player(
+        name: playerName,
+        life: 40,
+        poison: 0,
+        cmdtDamage: 0,
+        favColor: themeNotifier.primaryColor,
+        favIcon: themeNotifier.defaultIcon);
     final room = Room(
       roomName: roomName,
       players: [player],
@@ -56,7 +61,9 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
     try {
       await _firestoreService.createRoom(room);
-      context.read<RoomBloc>().add(JoinSubmitted(room: room.roomName, player: player));
+      context
+          .read<RoomBloc>()
+          .add(JoinSubmitted(room: room.roomName, player: player));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -71,25 +78,25 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
     final i10n = AppLocalizations.of(context)!;
 
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _roomNameController,
-              decoration: InputDecoration(labelText: i10n.room_name),
-            ),
-            TextField(
-              controller: _playerNameController,
-              decoration: InputDecoration(labelText: i10n.player_name),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _createRoom,
-              child: Text(i10n.create_room),
-            ),
-          ],
-        ),
-      );
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            controller: _roomNameController,
+            decoration: InputDecoration(labelText: i10n.room_name),
+          ),
+          TextField(
+            controller: _playerNameController,
+            decoration: InputDecoration(labelText: i10n.player_name),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _createRoom,
+            child: Text(i10n.create_room),
+          ),
+        ],
+      ),
+    );
   }
 }

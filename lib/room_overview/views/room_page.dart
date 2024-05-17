@@ -90,67 +90,67 @@ class _RoomViewState extends State<RoomView> {
         final state = context.read<RoomBloc>().state;
         if (state.roomOverviewState == RoomOverviewState.active) {
           _showLeaveConfirmationDialog(
-        context,
-        context.read<RoomBloc>(),
-        state.room!,
-        state.player!.name,
+            context,
+            context.read<RoomBloc>(),
+            state.room!,
+            state.player!.name,
           );
         } else {
           context.read<RoomBloc>().add(const ReturnClicked());
         }
       },
       child: Scaffold(
-      appBar: AppBar(
-        title: Text(i10n.title),
-        leading: BlocBuilder<RoomBloc, RoomState>(
-          builder: (context, state) {
-            if (state.roomOverviewState == RoomOverviewState.active) {
+        appBar: AppBar(
+          title: Text(i10n.title),
+          leading: BlocBuilder<RoomBloc, RoomState>(
+            builder: (context, state) {
+              if (state.roomOverviewState == RoomOverviewState.active) {
+                return IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    _showLeaveConfirmationDialog(
+                        context,
+                        context.read<RoomBloc>(),
+                        state.room!,
+                        state.player!.name);
+                  },
+                );
+              } else if (state.roomOverviewState == RoomOverviewState.initial) {
+                return Container();
+              }
               return IconButton(
-                icon: const Icon(Icons.exit_to_app),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  _showLeaveConfirmationDialog(
-                      context,
-                      context.read<RoomBloc>(),
-                      state.room!,
-                      state.player!.name);
+                  context.read<RoomBloc>().add(const ReturnClicked());
                 },
               );
+            },
+          ),
+        ),
+        body: BlocBuilder<RoomBloc, RoomState>(
+          builder: (context, state) {
+            if (state.roomOverviewState == RoomOverviewState.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            else if (state.roomOverviewState == RoomOverviewState.initial) {
-              return Container();
+            if (state.roomOverviewState == RoomOverviewState.create) {
+              return const CreateRoomPage();
             }
-            return IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                context.read<RoomBloc>().add(const ReturnClicked());
-              },
-            );
+            if (state.roomOverviewState == RoomOverviewState.join) {
+              return const JoinRoomPage();
+            }
+            if (state.roomOverviewState == RoomOverviewState.active) {
+              return ActiveRoomPage(
+                roomName: state.room!,
+                playerName: state.player!.name,
+              );
+            }
+            return const RoomHomePage();
           },
         ),
       ),
-      body: BlocBuilder<RoomBloc, RoomState>(
-        builder: (context, state) {
-          if (state.roomOverviewState == RoomOverviewState.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state.roomOverviewState == RoomOverviewState.create) {
-            return const CreateRoomPage();
-          }
-          if (state.roomOverviewState == RoomOverviewState.join) {
-            return const JoinRoomPage();
-          }
-          if (state.roomOverviewState == RoomOverviewState.active) {
-            return ActiveRoomPage(
-              roomName: state.room!,
-              playerName: state.player!.name,
-            );
-          }
-          return const RoomHomePage();
-        },
-      ),
-    ),);
+    );
   }
 }
 

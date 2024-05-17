@@ -27,56 +27,66 @@ class _ProxyPageState extends State<ProxyPage> {
 
     return Scaffold(
       appBar: AppBar(
-      title: Text(i10n.proxy_title),
+        title: Text(i10n.proxy_title),
       ),
       body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: FutureBuilder<MtgCard?>(
-              future: card,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child:CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text(i10n.proxy_error_more_specific);
-                } else if (snapshot.hasData) {
-                  var mtgCard = snapshot.data;
-                  if (mtgCard?.imageUris?.borderCrop != null) {
-                    return Padding(padding: const EdgeInsets.all(8) , child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        mtgCard!.imageUris!.borderCrop.toString(),
-                      ),
-                    ));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: FutureBuilder<MtgCard?>(
+                future: card,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text(i10n.proxy_error_more_specific);
+                  } else if (snapshot.hasData) {
+                    var mtgCard = snapshot.data;
+                    if (mtgCard?.imageUris?.borderCrop != null) {
+                      return Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              mtgCard!.imageUris!.borderCrop.toString(),
+                            ),
+                          ));
+                    } else {
+                      return Center(
+                          child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(i10n.proxy_error_not_supported)));
+                    }
                   } else {
-                    return Center(child:Padding(padding: const EdgeInsets.all(20), child: Text(i10n.proxy_error_not_supported)));
+                    return Center(
+                        child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(i10n.proxy_greeting)));
                   }
-                } else {
-                  return Center(child:Padding(padding: const EdgeInsets.all(20), child: Text(i10n.proxy_greeting)));
-                }
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: i10n.proxy_search,
+                },
               ),
             ),
-          ),
-          Padding(padding: const EdgeInsets.all(8.0), child:
-          ElevatedButton(
-            onPressed: _searchCard,
-            child: Text(i10n.proxy_search_button),
-          ),)
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: i10n.proxy_search,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: _searchCard,
+                child: Text(i10n.proxy_search_button),
+              ),
+            )
+          ],
+        ),
       ),
-    ),
     );
   }
 }

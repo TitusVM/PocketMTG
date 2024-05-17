@@ -10,13 +10,14 @@ class DicePage extends StatefulWidget {
   State<DicePage> createState() => _DicePageState();
 }
 
-class _DicePageState extends State<DicePage> with SingleTickerProviderStateMixin {
+class _DicePageState extends State<DicePage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   final Random _random = Random();
   int _diceResult = 0;
-  bool _isRolling = false;  
-  Timer? _flashTimer;  
+  bool _isRolling = false;
+  Timer? _flashTimer;
 
   @override
   void initState() {
@@ -30,10 +31,10 @@ class _DicePageState extends State<DicePage> with SingleTickerProviderStateMixin
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
-          _isRolling = false;  
-          _diceResult = _random.nextInt(20) + 1; 
+          _isRolling = false;
+          _diceResult = _random.nextInt(20) + 1;
         });
-        _flashTimer?.cancel(); 
+        _flashTimer?.cancel();
       }
     });
   }
@@ -41,14 +42,14 @@ class _DicePageState extends State<DicePage> with SingleTickerProviderStateMixin
   @override
   void dispose() {
     _controller.dispose();
-    _flashTimer?.cancel();  
+    _flashTimer?.cancel();
     super.dispose();
   }
 
   void _rollDice() {
     setState(() {
       _isRolling = true;
-      _flashTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) { 
+      _flashTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
         setState(() {
           _diceResult = _random.nextInt(20) + 1;
         });
@@ -62,11 +63,11 @@ class _DicePageState extends State<DicePage> with SingleTickerProviderStateMixin
     final i10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-      title: Text(i10n.rollDice),
+        title: Text(i10n.rollDice),
       ),
       body: Center(
-        child: Stack(  
-          alignment: Alignment.center, 
+        child: Stack(
+          alignment: Alignment.center,
           children: [
             AnimatedBuilder(
               animation: _animation,
@@ -77,25 +78,25 @@ class _DicePageState extends State<DicePage> with SingleTickerProviderStateMixin
                 );
               },
               child: Image.asset(
-                'assets/d20.png', 
-                width: 250,  
-                height: 250,  
+                'assets/d20.png',
+                width: 250,
+                height: 250,
               ),
             ),
-            Text( 
-              '$_diceResult',  
+            Text(
+              '$_diceResult',
               style: const TextStyle(
-                fontSize: 40,  
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,  
+                color: Colors.white,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _isRolling ? null : _rollDice,  
-        child: const Icon(Icons.casino),  
+        onPressed: _isRolling ? null : _rollDice,
+        child: const Icon(Icons.casino),
       ),
     );
   }

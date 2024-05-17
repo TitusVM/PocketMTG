@@ -11,7 +11,7 @@ class RoomState extends Equatable {
     this.roomOverviewState = RoomOverviewState.initial,
     this.room,
     this.player,
-    });
+  });
 
   RoomState copyWith({
     RoomOverviewState? roomOverviewState,
