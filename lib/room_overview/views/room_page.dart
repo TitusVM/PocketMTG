@@ -8,16 +8,15 @@ import 'package:pocket_mtg/room_overview/views/create_room_page.dart';
 import 'package:pocket_mtg/room_overview/views/join_room_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class RoomPage extends StatefulWidget {
   const RoomPage({Key? key}) : super(key: key);
 
   @override
   State<RoomPage> createState() => _RoomPageState();
-
 }
 
-class _RoomPageState extends State<RoomPage> with AutomaticKeepAliveClientMixin{
+class _RoomPageState extends State<RoomPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -43,7 +42,6 @@ class RoomView extends StatefulWidget {
 }
 
 class _RoomViewState extends State<RoomView> {
-  
   late FirestoreService firestoreService;
   @override
   void initState() {
@@ -51,7 +49,8 @@ class _RoomViewState extends State<RoomView> {
     firestoreService = FirestoreService(FirebaseFirestore.instance);
   }
 
-  Future<void> _showLeaveConfirmationDialog(BuildContext context, RoomBloc bloc, String room, String playerName) async {
+  Future<void> _showLeaveConfirmationDialog(BuildContext context, RoomBloc bloc,
+      String room, String playerName) async {
     final i10n = AppLocalizations.of(context)!;
 
     return showDialog<void>(
@@ -85,21 +84,43 @@ class _RoomViewState extends State<RoomView> {
   Widget build(BuildContext context) {
     final i10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool value) {
+        final state = context.read<RoomBloc>().state;
+        if (state.roomOverviewState == RoomOverviewState.active) {
+          _showLeaveConfirmationDialog(
+        context,
+        context.read<RoomBloc>(),
+        state.room!,
+        state.player!.name,
+          );
+        } else {
+          context.read<RoomBloc>().add(const ReturnClicked());
+        }
+      },
+      child: Scaffold(
       appBar: AppBar(
         title: Text(i10n.title),
-                leading: BlocBuilder<RoomBloc, RoomState>(
+        leading: BlocBuilder<RoomBloc, RoomState>(
           builder: (context, state) {
             if (state.roomOverviewState == RoomOverviewState.active) {
               return IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.exit_to_app),
                 onPressed: () {
-                                    _showLeaveConfirmationDialog(context, context.read<RoomBloc>(), state.room!, state.player!.name);
+                  _showLeaveConfirmationDialog(
+                      context,
+                      context.read<RoomBloc>(),
+                      state.room!,
+                      state.player!.name);
                 },
               );
             }
+            else if (state.roomOverviewState == RoomOverviewState.initial) {
+              return Container();
+            }
             return IconButton(
-              icon: const Icon(Icons.home),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 context.read<RoomBloc>().add(const ReturnClicked());
               },
@@ -108,27 +129,28 @@ class _RoomViewState extends State<RoomView> {
         ),
       ),
       body: BlocBuilder<RoomBloc, RoomState>(
-      builder: (context, state) {
-        if (state.roomOverviewState == RoomOverviewState.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state.roomOverviewState == RoomOverviewState.create) {
-          return const CreateRoomPage();
-        }
-        if (state.roomOverviewState == RoomOverviewState.join) {
-          return const JoinRoomPage();
-        }
-        if (state.roomOverviewState == RoomOverviewState.active) {
-          return ActiveRoomPage(
-            roomName: state.room!,
-            playerName: state.player!.name,
-          );
-        }
-        return const RoomHomePage();
-      },),
-    );
+        builder: (context, state) {
+          if (state.roomOverviewState == RoomOverviewState.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state.roomOverviewState == RoomOverviewState.create) {
+            return const CreateRoomPage();
+          }
+          if (state.roomOverviewState == RoomOverviewState.join) {
+            return const JoinRoomPage();
+          }
+          if (state.roomOverviewState == RoomOverviewState.active) {
+            return ActiveRoomPage(
+              roomName: state.room!,
+              playerName: state.player!.name,
+            );
+          }
+          return const RoomHomePage();
+        },
+      ),
+    ),);
   }
 }
 
@@ -141,22 +163,21 @@ class RoomHomePage extends StatelessWidget {
 
     return Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                context.read<RoomBloc>().add(const CreateClicked());
-              },
-              child: Text(i10n.create_room),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.read<RoomBloc>().add(const JoinClicked());
-              },
-              child: Text(i10n.join_room),
-            ),
-          ],
-        )
-    );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            context.read<RoomBloc>().add(const CreateClicked());
+          },
+          child: Text(i10n.create_room),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            context.read<RoomBloc>().add(const JoinClicked());
+          },
+          child: Text(i10n.join_room),
+        ),
+      ],
+    ));
   }
 }
