@@ -34,6 +34,7 @@ class DamageControl extends StatelessWidget {
           icon: const Icon(Icons.remove),
           onPressed: () => updateCallback(playerName, -1),
         ),
+        SizedBox(width: 40, child: 
         RichText(
           text: TextSpan(
             children: [
@@ -41,12 +42,12 @@ class DamageControl extends StatelessWidget {
                 child: Icon(icon, size: 16),
               ),
               TextSpan(
-                text: " $label",
+                text: label,
                 style: const TextStyle(color: Colors.black),
               ),
             ],
           ),
-        ),
+        ),),
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: () => updateCallback(playerName, 1),
@@ -82,7 +83,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
   void initState() {
     super.initState();
     _firestoreService = Provider.of<FirestoreService>(context, listen: false);
-    _roomStream = _firestoreService.getRoomStream(widget.roomName) as Stream<DocumentSnapshot<Object?>>;
+    _roomStream = _firestoreService.getRoomStream(widget.roomName);
   }
 
   Future<void> _updateLife(String playerName, int step) async {
