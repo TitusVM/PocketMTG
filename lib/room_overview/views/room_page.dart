@@ -6,6 +6,8 @@ import 'package:pocket_mtg/room_overview/bloc/room_bloc.dart';
 import 'package:pocket_mtg/room_overview/views/active_room_page.dart';
 import 'package:pocket_mtg/room_overview/views/create_room_page.dart';
 import 'package:pocket_mtg/room_overview/views/join_room_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class RoomPage extends StatefulWidget {
   const RoomPage({Key? key}) : super(key: key);
@@ -16,17 +18,8 @@ class RoomPage extends StatefulWidget {
 }
 
 class _RoomPageState extends State<RoomPage> with AutomaticKeepAliveClientMixin{
-
-  late FirestoreService firestoreService;
-
   @override
   bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-    firestoreService = FirestoreService(FirebaseFirestore.instance);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +35,77 @@ class _RoomPageState extends State<RoomPage> with AutomaticKeepAliveClientMixin{
   }
 }
 
-class RoomView extends StatelessWidget {
+class RoomView extends StatefulWidget {
   const RoomView({Key? key}) : super(key: key);
 
   @override
+  State<RoomView> createState() => _RoomViewState();
+}
+
+class _RoomViewState extends State<RoomView> {
+  
+  late FirestoreService firestoreService;
+  @override
+  void initState() {
+    super.initState();
+    firestoreService = FirestoreService(FirebaseFirestore.instance);
+  }
+
+  Future<void> _showLeaveConfirmationDialog(BuildContext context, RoomBloc bloc, String room, String playerName) async {
+    final i10n = AppLocalizations.of(context)!;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(i10n.confirmation),
+          content: Text(i10n.leave_confirmation),
+          actions: <Widget>[
+            TextButton(
+              child: Text(i10n.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(i10n.confirm),
+              onPressed: () {
+                firestoreService.leaveRoom(room, playerName);
+                bloc.add(const ReturnClicked());
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('PocketMTG'),
+        title: Text(i10n.title),
+                leading: BlocBuilder<RoomBloc, RoomState>(
+          builder: (context, state) {
+            if (state.roomOverviewState == RoomOverviewState.active) {
+              return IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                                    _showLeaveConfirmationDialog(context, context.read<RoomBloc>(), state.room!, state.player!.name);
+                },
+              );
+            }
+            return IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                context.read<RoomBloc>().add(const ReturnClicked());
+              },
+            );
+          },
+        ),
       ),
       body: BlocBuilder<RoomBloc, RoomState>(
       builder: (context, state) {
@@ -82,6 +137,8 @@ class RoomHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final i10n = AppLocalizations.of(context)!;
+
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -90,13 +147,13 @@ class RoomHomePage extends StatelessWidget {
               onPressed: () {
                 context.read<RoomBloc>().add(const CreateClicked());
               },
-              child: const Text('Create Room'),
+              child: Text(i10n.create_room),
             ),
             ElevatedButton(
               onPressed: () {
                 context.read<RoomBloc>().add(const JoinClicked());
               },
-              child: const Text('Join Room'),
+              child: Text(i10n.join_room),
             ),
           ],
         )

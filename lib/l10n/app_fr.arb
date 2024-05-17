@@ -22,5 +22,9 @@
   "proxy_search_button": "searh ard",
   "proxy_error_more_specific": "please be more speifi",
   "proxy_error_not_supported": "this ard an't be loaded (double sided ards are not supported)",
-  "proxy_greeting": "you an look for almost any kind of ards to proxy using the sryfall api."
+  "proxy_greeting": "you an look for almost any kind of ards to proxy using the sryfall api.",
+  "confirmation": "attention",
+  "leave_confirmation": "voulez vous vraiment quitter la room ?",
+  "cancel": "annuler",
+  "confirm": "onfirmer"
 }

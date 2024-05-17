@@ -65,6 +65,8 @@ class BottomNavigationBarExample extends StatefulWidget {
 }
 
 class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
+
+
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
@@ -77,6 +79,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
   @override
   Widget build(BuildContext context) {
     final i10n = AppLocalizations.of(context)!;
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
@@ -87,19 +90,19 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
         currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-adventure.svg', isSelected: _selectedIndex == 0),
+            icon: MySVGIcon(iconPath: 'assets/ability-adventure.svg', isSelected: _selectedIndex == 0, primaryColor: themeNotifier.primaryColor),
             label: i10n.room,
           ),
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-transform.svg', isSelected: _selectedIndex == 1),
+            icon: MySVGIcon(iconPath: 'assets/ability-transform.svg', isSelected: _selectedIndex == 1, primaryColor: themeNotifier.primaryColor),
             label: i10n.proxy,
           ),
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-d20.svg', isSelected: _selectedIndex == 2),
+            icon: MySVGIcon(iconPath: 'assets/ability-d20.svg', isSelected: _selectedIndex == 2, primaryColor: themeNotifier.primaryColor),
             label: i10n.dice,
           ),
           BottomNavigationBarItem(
-            icon: MySVGIcon(iconPath: 'assets/ability-prototype.svg', isSelected: _selectedIndex == 3),
+            icon: MySVGIcon(iconPath: 'assets/ability-prototype.svg', isSelected: _selectedIndex == 3, primaryColor: themeNotifier.primaryColor),
             label: i10n.theme,
           ),
         ],

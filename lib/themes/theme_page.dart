@@ -13,7 +13,8 @@ class ThemePage extends StatefulWidget {
   State<ThemePage> createState() => _ThemePageState();
 }
 
-class _ThemePageState extends State<ThemePage> {
+class _ThemePageState extends State<ThemePage>
+    with AutomaticKeepAliveClientMixin {
   final List<MyTheme> themes = [
     mtgPurple,
     mtgGreen,
@@ -23,26 +24,34 @@ class _ThemePageState extends State<ThemePage> {
     mtgGrey,
   ];
 
+  @override
+  bool get wantKeepAlive => true;
+
+  int selected = 0;
+
   final MaterialStateProperty<Icon?> thumbIcon =
       MaterialStateProperty.resolveWith<Icon?>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.selected)) {
         return const Icon(IconData(59392, fontFamily: 'MTGIcons'));
       }
-        return const Icon(IconData(59393, fontFamily: 'MTGIcons'));
+      return const Icon(IconData(59393, fontFamily: 'MTGIcons'));
     },
   );
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     final localeNotifier = Provider.of<LocaleNotifier>(context);
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.theme),
-        ),
-        body: Padding(
+    return PageView(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context)!.theme),
+          ),
+          body: Padding(
             padding: const EdgeInsets.all(8),
             child: Column(
               children: [
@@ -52,6 +61,11 @@ class _ThemePageState extends State<ThemePage> {
                   onChanged: (isCustomFont) {
                     localeNotifier.toggleLocale();
                     themeNotifier.toggleFont();
+                    for (int i = 0; i < themes.length; i++) {
+                      if (selected != i) {
+                        themes[i].togglePhyrexian();
+                      }
+                    }
                   },
                 ),
                 Expanded(
@@ -72,6 +86,7 @@ class _ThemePageState extends State<ThemePage> {
                           foregroundColor: myTheme.textColor,
                         ),
                         onPressed: () {
+                          selected = index;
                           themeNotifier.setTheme(myTheme);
                         },
                         child: themeNotifier.isPhyrexian
@@ -90,6 +105,10 @@ class _ThemePageState extends State<ThemePage> {
                   ),
                 )
               ],
-            )));
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

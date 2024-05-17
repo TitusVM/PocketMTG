@@ -1,18 +1,74 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pocket_mtg/room_overview/models/player.dart';
 import 'package:pocket_mtg/room_overview/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+class DamageControl extends StatelessWidget {
+  final String playerName;
+  final IconData icon;
+  final String label;
+  final Function(String playerName, int step) updateCallback;
+
+  const DamageControl({
+    Key? key,
+    required this.playerName,
+    required this.icon,
+    required this.label,
+    required this.updateCallback,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.remove_circle_outline),
+          onPressed: () => updateCallback(playerName, -5),
+        ),
+        IconButton(
+          icon: const Icon(Icons.remove),
+          onPressed: () => updateCallback(playerName, -1),
+        ),
+        RichText(
+          text: TextSpan(
+            children: [
+              WidgetSpan(
+                child: Icon(icon, size: 16),
+              ),
+              TextSpan(
+                text: " $label",
+                style: const TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () => updateCallback(playerName, 1),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle_outline),
+          onPressed: () => updateCallback(playerName, 5),
+        ),
+      ],
+    );
+  }
+}
+
 class ActiveRoomPage extends StatefulWidget {
   final String roomName;
   final String playerName;
 
-  const ActiveRoomPage(
-      {Key? key, required this.roomName, required this.playerName})
-      : super(key: key);
+  const ActiveRoomPage({
+    Key? key,
+    required this.roomName,
+    required this.playerName,
+  }) : super(key: key);
 
   @override
   State<ActiveRoomPage> createState() => _ActiveRoomPageState();
@@ -26,7 +82,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
   void initState() {
     super.initState();
     _firestoreService = Provider.of<FirestoreService>(context, listen: false);
-    _roomStream = _firestoreService.getRoomStream(widget.roomName);
+    _roomStream = _firestoreService.getRoomStream(widget.roomName) as Stream<DocumentSnapshot<Object?>>;
   }
 
   Future<void> _updateLife(String playerName, int step) async {
@@ -37,9 +93,11 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
     await _firestoreService.updatePoison(widget.roomName, playerName, step);
   }
 
-    Future<void> _updateCmdtDamage(String playerName, int step) async {
-    await _firestoreService.updateCmdtDamage(widget.roomName, playerName, step);
+  Future<void> _updateCmdtDamage(String playerName, int step) async {
+    await _firestoreService.updateCmdtDamage(
+        widget.roomName, playerName, step);
   }
+
   @override
   Widget build(BuildContext context) {
     final i10n = AppLocalizations.of(context)!;
@@ -72,177 +130,39 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
                 side: BorderSide(color: player.favColor, width: 2),
                 borderRadius: BorderRadius.circular(5),
               ),
-                title: Text(
+              title: Text(
                 '${i10n.player}: ${player.name}',
                 style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              subtitle:Column(mainAxisAlignment: MainAxisAlignment.start, children: [Row(
-                mainAxisSize: MainAxisSize.min,
+              ),
+              subtitle: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: () => _updateLife(player.name, -5),
-                        )
-                      : const SizedBox(
-                          width: 64,
-                          height: 64,
-                        ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: () => _updateLife(player.name, -1),
-                        )
-                      : const SizedBox(
-                          width: 64,
-                          height: 64,
-                        ),
-                    RichText(
-                      text: TextSpan(
-                      children: [
-                        const WidgetSpan(
-                        child: Icon(Icons.favorite, size: 16),
-                        ),
-                        TextSpan(
-                        text: " ${player.life}",
-                        style: const TextStyle(color: Colors.black),
-                        ),
-                      ],
-                      ),
-                    ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () => _updateLife(player.name, 1),
-                        )
-                      : const SizedBox(
-                          width: 64,
-                          height: 64,
-                        ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.add_circle_outline),
-                          onPressed: () => _updateLife(player.name, 5),
-                        )
-                      : const SizedBox(
-                          width: 64,
-                          height: 64,
-                        ),
+                  DamageControl(
+                    playerName: player.name,
+                    icon: Icons.favorite,
+                    label: '${player.life}',
+                    updateCallback: _updateLife,
+                  ),
+                  DamageControl(
+                    playerName: player.name,
+                    icon: const IconData(59394, fontFamily: 'MTGIcons'),
+                    label: '${player.poison}',
+                    updateCallback: _updatePoison,
+                  ),
+                  DamageControl(
+                    playerName: player.name,
+                    icon: const IconData(59393, fontFamily: 'MTGIcons'),
+                    label: '${player.cmdtDamage}',
+                    updateCallback: _updateCmdtDamage,
+                  ),
                 ],
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: () => _updatePoison(player.name, -5),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: () => _updatePoison(player.name, -1),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                                      RichText(
-                      text: TextSpan(
-                      children: [
-                        const WidgetSpan(
-                        child: Icon(IconData(59394, fontFamily: 'MTGIcons')),
-                        ),
-                        TextSpan(
-                        text: " ${player.poison}",
-                        style: const TextStyle(color: Colors.black),
-                        ),
-                      ],
-                      ),
-                    ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () => _updatePoison(player.name, 1),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.add_circle_outline),
-                          onPressed: () => _updatePoison(player.name, 5),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                ],
-                
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: () => _updateCmdtDamage(player.name, -5),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: () => _updateCmdtDamage(player.name, -1),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                                      RichText(
-                      text: TextSpan(
-                      children: [
-                        const WidgetSpan(
-                        child: Icon(IconData(59393, fontFamily: 'MTGIcons')),
-                        ),
-                        TextSpan(
-                        text: " ${player.cmdtDamage}",
-                        style: const TextStyle(color: Colors.black),
-                        ),
-                        ],
-                      ),
-                    ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () => _updateCmdtDamage(player.name, 1),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                  player.name == widget.playerName
-                      ? IconButton(
-                          icon: const Icon(Icons.add_circle_outline),
-                          onPressed: () => _updateCmdtDamage(player.name, 5),
-                        )
-                      : const SizedBox(
-                          width: 48,
-                          height: 48,
-                        ),
-                ]) ],),
               trailing: SvgPicture.asset(player.favIcon, width: 40, height: 40),
             );
-          }, separatorBuilder: (BuildContext context, int index) {
+          },
+          separatorBuilder: (BuildContext context, int index) {
             return const Padding(padding: EdgeInsets.all(8));
-           },
+          },
         );
       },
     );
