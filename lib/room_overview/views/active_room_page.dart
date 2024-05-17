@@ -82,7 +82,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
   void initState() {
     super.initState();
     _firestoreService = Provider.of<FirestoreService>(context, listen: false);
-    _roomStream = _firestoreService.getRoomStream(widget.roomName);
+    _roomStream = _firestoreService.getRoomStream(widget.roomName) as Stream<DocumentSnapshot<Object?>>;
   }
 
   Future<void> _updateLife(String playerName, int step) async {

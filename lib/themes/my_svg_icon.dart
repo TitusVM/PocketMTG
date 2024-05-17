@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+// ignore: must_be_immutable
 class MySVGIcon extends StatelessWidget {
   final String iconPath;
   final double size;

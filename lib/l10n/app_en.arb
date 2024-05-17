@@ -22,5 +22,9 @@
   "proxy_search_button": "Search card",
   "proxy_error_more_specific": "Please be more specific",
   "proxy_error_not_supported": "This card can't be loaded (double sided cards are not supported)",
-  "proxy_greeting": "You can look for almost any kind of cards to proxy using the Scryfall api."
+  "proxy_greeting": "You can look for almost any kind of cards to proxy using the Scryfall api.",
+  "confirmation": "Warning",
+  "leave_confirmation": "You are about to leave the room",
+  "cancel": "Back",
+  "confirm": "Confirm"
 }

@@ -43,7 +43,11 @@ ThemeData createMyTheme(MaterialColor primaryColor, Color textColor, bool isPhyr
       hintStyle: TextStyle(color: primaryColor),
       errorStyle: TextStyle(color: primaryColor),
     ),
-    
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(primaryColor),
+      ),
+    ),
     primarySwatch: primaryColor,
     appBarTheme: AppBarTheme(
       backgroundColor: primaryColor,
