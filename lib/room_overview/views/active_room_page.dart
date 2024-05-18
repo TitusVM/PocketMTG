@@ -11,6 +11,7 @@ class DamageControl extends StatelessWidget {
   final IconData icon;
   final String label;
   final Function(String playerName, int step) updateCallback;
+  final bool isActivePlayer;
 
   const DamageControl({
     Key? key,
@@ -18,6 +19,7 @@ class DamageControl extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.updateCallback,
+    required this.isActivePlayer,
   }) : super(key: key);
 
   @override
@@ -25,14 +27,24 @@ class DamageControl extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          icon: const Icon(Icons.remove_circle_outline),
-          onPressed: () => updateCallback(playerName, -5),
-        ),
-        IconButton(
-          icon: const Icon(Icons.remove),
-          onPressed: () => updateCallback(playerName, -1),
-        ),
+        isActivePlayer
+            ? IconButton(
+                icon: const Icon(Icons.remove_circle_outline),
+                onPressed: () => updateCallback(playerName, -5),
+              )
+            : const SizedBox(
+                width: 48,
+                height: 48,
+              ),
+        isActivePlayer
+            ? IconButton(
+                icon: const Icon(Icons.remove),
+                onPressed: () => updateCallback(playerName, -1),
+              )
+            : const SizedBox(
+                width: 48,
+                height: 48,
+              ),
         SizedBox(
           width: 40,
           child: RichText(
@@ -49,14 +61,24 @@ class DamageControl extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () => updateCallback(playerName, 1),
-        ),
-        IconButton(
-          icon: const Icon(Icons.add_circle_outline),
-          onPressed: () => updateCallback(playerName, 5),
-        ),
+        isActivePlayer
+            ? IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () => updateCallback(playerName, 1),
+              )
+            : const SizedBox(
+                width: 48,
+                height: 48,
+              ),
+        isActivePlayer
+            ? IconButton(
+                icon: const Icon(Icons.add_circle_outline),
+                onPressed: () => updateCallback(playerName, 5),
+              )
+            : const SizedBox(
+                width: 48,
+                height: 48,
+              ),
       ],
     );
   }
@@ -125,7 +147,7 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
           padding: const EdgeInsets.all(8),
           itemBuilder: (context, index) {
             final player = Player.fromMap(players[index]);
-
+            final isActivePlayer = player.name == widget.playerName;  
             return ListTile(
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: player.favColor, width: 2),
@@ -143,18 +165,21 @@ class _ActiveRoomPageState extends State<ActiveRoomPage> {
                     icon: Icons.favorite,
                     label: '${player.life}',
                     updateCallback: _updateLife,
+                    isActivePlayer: isActivePlayer,
                   ),
                   DamageControl(
                     playerName: player.name,
                     icon: const IconData(59394, fontFamily: 'MTGIcons'),
                     label: '${player.poison}',
                     updateCallback: _updatePoison,
+                    isActivePlayer: isActivePlayer,
                   ),
                   DamageControl(
                     playerName: player.name,
                     icon: const IconData(59393, fontFamily: 'MTGIcons'),
                     label: '${player.cmdtDamage}',
                     updateCallback: _updateCmdtDamage,
+                    isActivePlayer: isActivePlayer,
                   ),
                 ],
               ),

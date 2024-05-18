@@ -52,7 +52,8 @@ class FirestoreService {
       }
 
       final room = Room.fromMap(roomSnapshot.data() as Map<String, dynamic>);
-      final players = room.players;
+      List<Player> players = room.players;
+
 
       final playerIndex = players.indexWhere((p) => p.name == playerName);
       if (playerIndex == -1) {
@@ -65,7 +66,7 @@ class FirestoreService {
         // Delete the room if there are no players left
         transaction.delete(roomRef);
       } else {
-        transaction.update(roomRef, {'players': players});
+      transaction.update(roomRef, {'players': players.map((p) => p.toMap()).toList()});
       }
     });
   }
